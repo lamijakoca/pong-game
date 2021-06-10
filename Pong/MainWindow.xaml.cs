@@ -38,7 +38,6 @@ namespace Pong
         private double speedY = 200;
 
         private double beginBallX = 200;
-        //private double beginBallY = 150;
 
         //score
         private int score1 = 0;
@@ -176,11 +175,17 @@ namespace Pong
                 speedX = beginSpeedX;
                 speedY = beginSpeedY;
                 score2++;
+                if (score2 == 11 && score2 > score1)
+                {
+                    playerTimer.Stop();
+                    animtionTimer.Stop();
+                    MessageBox.Show("Player2 is winner");
+                }
                 leftCooldown = false;
                 rightCooldown = false;
                 Canvas.SetLeft(ball, beginBallX);
                 Canvas.SetTop(ball, beginSpeedY);
-                second.Content = score1.ToString();
+                second.Content = score2.ToString();
                 return;
             }
             if (x >= 10 + game.ActualWidth)
@@ -188,11 +193,17 @@ namespace Pong
                 speedX = beginSpeedX;
                 speedY = beginSpeedY;
                 score1++;
+                if (score1 == 11 && score1 > score2)
+                {
+                    playerTimer.Stop();
+                    animtionTimer.Stop();
+                    MessageBox.Show("Player1 is winner");
+                }
                 leftCooldown = false;
                 rightCooldown = false;
                 Canvas.SetLeft(ball, beginBallX);
                 Canvas.SetTop(ball, beginSpeedY);
-                first.Content = score2.ToString();
+                first.Content = score1.ToString();
                 return;
             }
 
