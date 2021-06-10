@@ -32,8 +32,13 @@ namespace Pong
         private DispatcherTimer animtionTimer = new DispatcherTimer();
 
         //ball speed
+        private double beginSpeedX = 140;
+        private double beginSpeedY = 200;
         private double speedX = 140;
         private double speedY = 200;
+
+        private double beginBallX = 200;
+        //private double beginBallY = 150;
 
         //score
         private int score1 = 0;
@@ -79,7 +84,7 @@ namespace Pong
             {
                 if (Canvas.GetTop(RightBorder) + 100 < game.ActualHeight)
                 {
-                    Canvas.SetTop(RightBorder, Canvas.GetTop(RightBorder) - 10);
+                    Canvas.SetTop(RightBorder, Canvas.GetTop(RightBorder) + 10);
                 }
             }
         }
@@ -148,13 +153,13 @@ namespace Pong
             var x = Canvas.GetLeft(ball);
             var y = Canvas.GetTop(ball);
 
-            if (x <= LeftBorder.Width && y >= Canvas.GetTop(LeftBorder) && y + ball.Height <= Canvas.GetTop(LeftBorder) + LeftBorder.Height)
+            if (x <= LeftBorder.Width && y >= Canvas.GetTop(LeftBorder) && y + ball.Height <= Canvas.GetTop(LeftBorder) + LeftBorder.Height && !leftCooldown)
             {
                 speedX = -speedX;
                 leftCooldown = true;
                 rightCooldown = false;
             }
-            if (x + ball.Width >= game.ActualWidth - (Canvas.GetRight(RightBorder) + RightBorder.Width) && y + RightBorder.Width >= Canvas.GetTop(RightBorder) + RightBorder.Height)
+            if (x + ball.Width >= game.ActualWidth - (Canvas.GetRight(RightBorder) + RightBorder.Width) && y + RightBorder.Width >= Canvas.GetTop(RightBorder) + RightBorder.Height && !rightCooldown)
             {
                 speedX = -speedX;
                 rightCooldown = true;
@@ -165,6 +170,40 @@ namespace Pong
             {
                 speedY = -speedY;
             }
+
+            if (x <= -10 - ball.Width)
+            {
+                speedX = beginSpeedX;
+                speedY = beginSpeedY;
+                score2++;
+                leftCooldown = false;
+                rightCooldown = false;
+                Canvas.SetLeft(ball, beginBallX);
+                Canvas.SetTop(ball, beginSpeedY);
+                second.Content = score1.ToString();
+                return;
+            }
+            if (x >= 10 + game.ActualWidth)
+            {
+                speedX = beginSpeedX;
+                speedY = beginSpeedY;
+                score1++;
+                leftCooldown = false;
+                rightCooldown = false;
+                Canvas.SetLeft(ball, beginBallX);
+                Canvas.SetTop(ball, beginSpeedY);
+                first.Content = score2.ToString();
+                return;
+            }
+
+            speedX *= 1.0001;
+            speedY *= 1.0001;
+
+            //Ball movement
+            x += speedX + animtionTimer.Interval.TotalSeconds;
+            y += speedY * animtionTimer.Interval.TotalSeconds;
+            Canvas.SetLeft(ball, x);
+            Canvas.SetTop(ball, y);
         }
     }
 }
