@@ -81,7 +81,7 @@ namespace Pong
             }
             else if (P2DOWN)
             {
-                if (Canvas.GetTop(RightBorder) + 100 < game.ActualHeight)
+                if (Canvas.GetTop(RightBorder) + RightBorder.Height < game.ActualHeight)
                 {
                     Canvas.SetTop(RightBorder, Canvas.GetTop(RightBorder) + 10);
                 }
@@ -167,6 +167,7 @@ namespace Pong
 
             if(y <= 0.0 || y >= game.ActualHeight - ball.Height)
             {
+                //change speed direction
                 speedY = -speedY;
             }
 
